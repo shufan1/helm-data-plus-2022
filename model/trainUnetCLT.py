@@ -1,12 +1,13 @@
 """
 Run training as a command line tool. Same steps and output as trainUnet.ipynb
 Eg: 
-    python trainUnetCLT.py -d 02_Data_Augmented_2class -train ardmayle kilbixy -test knockainey -use_h -prop 0.8 -s 512 -lr 0.0007 -m 0.8 -e 5 -b 10 -f -o train_ard_kilb
+    python trainUnetCLT.py -d 00_Data_Preprocessed -train ardmayle kilbixy -test knockainey -use_h -prop 0.8 -s 512 -overlap 64 -lr 0.0007 -m 0.8 -e 5 -b 10 -f -o train_ard_kilb
+
     this means: train on samples from site ardmayle, kilbixy
                 test on site knocakiney
                 use hillshade as model input
                 train - val split is 80% VS 20%
-                subimge size = 512
+                subimge size = 512, overlap when splitting 64
                 training parameters: learning rate =  0.0007, epoch = 35, batch size = 10 and momentum = 0.8
                 do not freeze encoder block when training
                 do not load any previous weights: -p path_to_weight_file if needed
@@ -340,6 +341,8 @@ if __name__=="__main__":
                     help="training val split, train proportion 0-1")
     parser.add_argument('-s','--size',nargs="?",default = chip_size,type=int,
                         help="img size")
+    parser.add_argument('--overlap',nargs="?",default = 64,type=int,
+                        help="number of pixels on right and bottom to overlap when splitting")
     parser.add_argument('-use_h','--hillshade',default=False,action="store_true",help="use hillshade as input")
     parser.add_argument('-lr','--lr',nargs="?",default = lr,help="learning rate",type=float)
     parser.add_argument('-m','--momentum',nargs="?",default = momentum,help="momentum",type=float)
@@ -355,6 +358,7 @@ if __name__=="__main__":
     trainSites = args.train
     testSites = args.test
     train_prop = args.prop
+    subimage_size,overlap = args.size,args.overlap
     lr,momentum,epochs,batch_size = args.lr,args.momentum,args.epoch,args.batch_size
     freeze_encoder,load_weights,use_hillshade = args.freeze, args.load, args.hillshade
     weight_path = args.path
@@ -381,7 +385,7 @@ if __name__=="__main__":
 
     
     load_and_train(dtms_path_all,labels_path_all,hsds_path_all,
-                trainSites,testSites,model_folder,model_name,subimage_size=512,overlap=64,
+                trainSites,testSites,model_folder,model_name,subimage_size=subimage_size,overlap=overlap,
                 train_prop=0.8,num_classes = 2, batch_size = 10, 
                 lr = 0.0007,epoch=15, momentum=0.8,
                 use_hillshade=True,drop_edge =True,
