@@ -116,10 +116,6 @@ If no specify path to input data and output folder, the input folder is `00_Data
         python trainUnetCLT.py -d 00_Data_Preprocessed -train ardmayle kilbixy -test knockainey -use_h -prop 0.8 -s 512 -overlap 64 -lr 0.0007 -m 0.8 -e 5 -b 10 -f -o train_ard_kilb
 ```
 The meaning of each arguenets and flag are explained below:
-<details>
-<summary>Click to expand!</summary>
-
-
 ```
 usage: trainUnetCLT.py [-h] [-d [DATA_ROOT]] [-train TRAIN [TRAIN ...]] [-test TEST [TEST ...]] [-prop [PROP]] [-s [SIZE]]
                        [--overlap [OVERLAP]] [-use_h] [-lr [LR]] [-m [MOMENTUM]] [-e [EPOCH]] [-b [BATCH_SIZE]] [-f] [-l] [-p [PATH]]
@@ -156,7 +152,6 @@ optional arguments:
 
 ```
 
-</details>
     
 
 
